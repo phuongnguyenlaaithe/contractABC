@@ -5,18 +5,11 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./contractB.sol";
 
 contract A {
-    address public owner;
     B public bToken;
 
     mapping(address => uint256) public lockedBalance;
 
-    modifier onlyOwner() {
-        require(msg.sender == owner, "Not the owner");
-        _;
-    }
-
     constructor (address _bTokenAddress) {
-        owner = msg.sender;
         bToken = B(_bTokenAddress);
     }
 
@@ -26,11 +19,11 @@ contract A {
         lockedBalance[msg.sender] += amount;
     }
 
-    function mint(uint256 amount) external onlyOwner {
+    function mint(uint256 amount) external {
         bToken.mint(address(this), amount);
     }
 
-    function burn(uint256 amount) external onlyOwner {
+    function burn(uint256 amount) external {
         bToken.burn(address(this), amount);
     }
 
